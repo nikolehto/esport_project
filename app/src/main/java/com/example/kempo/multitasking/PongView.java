@@ -54,6 +54,13 @@ class PongView extends SurfaceView implements Runnable {
     // A mBall
     Ball mBall;
 
+    // Buttons
+    ReactionButton mButton1;
+    ReactionButton mButton2;
+    ReactionButton mButton3;
+    ReactionButton mButton4;
+
+
     // For sound FX
     SoundPool sp;
     int beep1ID = -1;
@@ -92,6 +99,12 @@ class PongView extends SurfaceView implements Runnable {
 
         // Create a mBall
         mBall = new Ball(mScreenX, mScreenY);
+
+        // Create four buttons
+        mButton1 = new ReactionButton(mScreenX,mScreenY);
+        mButton2 = new ReactionButton(mScreenX,mScreenY);
+        mButton3 = new ReactionButton(mScreenX,mScreenY);
+        mButton4 = new ReactionButton(mScreenX,mScreenY);
 
         // Instantiate our sound pool dependent upon which version of Android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -143,6 +156,12 @@ class PongView extends SurfaceView implements Runnable {
 
         // Put the mBall back to the start
         mBall.reset(mScreenX, mScreenY);
+
+        mButton1.set(mScreenX/4,mScreenY/16);
+        mButton2.set(mScreenX*3/4,mScreenY/16);
+        mButton3.set(mScreenX/4 ,mScreenY*2/16);
+        mButton4.set(mScreenX* 3/4,mScreenY *2/16);
+
 
         // if game over reset scores and mLives
         if(mLives == 0) {
@@ -260,6 +279,12 @@ class PongView extends SurfaceView implements Runnable {
             // Choose the brush color for drawing
             mPaint.setColor(Color.argb(255, 255, 255, 255));
 
+            // Draw buttons
+            mCanvas.drawRect(mButton1.getRect(),mPaint);
+            mCanvas.drawRect(mButton2.getRect(),mPaint);
+            mCanvas.drawRect(mButton3.getRect(),mPaint);
+            mCanvas.drawRect(mButton4.getRect(),mPaint);
+
             // Draw the mBat
             mCanvas.drawRect(mBat.getRect(), mPaint);
 
@@ -315,10 +340,10 @@ class PongView extends SurfaceView implements Runnable {
                 mPaused = false;
 
                 // Is the touch on the right or left?
-                if(motionEvent.getX() > mScreenX / 2){
+                if(motionEvent.getX() > mScreenX / 2 && motionEvent.getY()> mScreenY/2){
                     mBat.setMovementState(mBat.RIGHT);
                 }
-                else{
+                else if(motionEvent.getX() < mScreenX / 2 && motionEvent.getY()> mScreenY/2){
                     mBat.setMovementState(mBat.LEFT);
                 }
 
